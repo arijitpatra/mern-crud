@@ -7,6 +7,8 @@ function App() {
   const [count, setCount] = useState(0);
 
   useEffect(() => {
+    const abortController = new AbortController();
+
     fetch("http://localhost:3000/v1/api/tasks", {
       method: "POST",
       headers: {
@@ -16,7 +18,10 @@ function App() {
         title: "breakfast",
         description: "sambhar, idly and dosa",
       }),
+      signal: abortController.signal,
     });
+
+    return () => abortController.abort();
   }, []);
 
   return (
